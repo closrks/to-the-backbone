@@ -7,11 +7,6 @@ var Person = Backbone.Model.extend({
 		, occupation: 'Some Job'
 	}
 
-	// backbone calls attrs on set
-	// fail returns a false
-	// listen for error obj.on('error', function(model, error) {
-		// console.log(error);
-	// })
 	, validate: function(attrs) {
 
 		if (attrs.age < 0) {
@@ -30,3 +25,24 @@ var Person = Backbone.Model.extend({
 	}
 
 });
+
+// view is representation of single element
+// include jquery first in html
+var PersonView = Backbone.View.extend({
+
+	  tagName: 'li'
+
+	// automatically run on instance
+	, initialize: function() {
+		this.render();
+	}
+
+	// call depending on project
+	, render: function() {
+		// anti-pattern
+		this.$el.html( this.model.get('name')  + ' (' + this.model.get('age') + ') - ' + this.model.get('occupation'));
+	}
+});
+
+var person = new Person();
+var personView = new PersonView({ model: person });
