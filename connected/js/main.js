@@ -7,22 +7,26 @@ var Person = Backbone.Model.extend({
 		, occupation: 'Some Job'
 	}
 
+	// backbone calls attrs on set
+	// fail returns a false
+	// listen for error obj.on('error', function(model, error) {
+		// console.log(error);
+	// })
+	, validate: function(attrs) {
+
+		if (attrs.age < 0) {
+			return 'Age must be positive';
+		}
+
+		if (!attrs.name) {
+			return 'Every person must have a name';
+		}
+
+	}
+
 	, work: function() {
+
 		return this.get('name') + ' is working.';
 	}
 
 });
-
-// the javascript way
-// specific to each instance
-// var Person = function(config) {
-// 	this.name = config.name;
-// 	this.age = config.age;
-// 	this.occupation = config.occupation;
-// };
-
-// will share this instance
-// Person.prototype.work = function() {
-// 	return this.name + ' is working.';
-// };
-
