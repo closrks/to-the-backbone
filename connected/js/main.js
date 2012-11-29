@@ -30,7 +30,10 @@ var Person = Backbone.Model.extend({
 // include jquery first in html
 var PersonView = Backbone.View.extend({
 
-	  tagName: 'li'
+	tagName: 'li'
+
+	// underscore templating system
+	, template: _.template("<strong><%= name %></strong> (<%= age %>) - <%= occupation %>")
 
 	// automatically run on instance
 	, initialize: function() {
@@ -39,8 +42,8 @@ var PersonView = Backbone.View.extend({
 
 	// call depending on project
 	, render: function() {
-		// anti-pattern
-		this.$el.html( this.model.get('name')  + ' (' + this.model.get('age') + ') - ' + this.model.get('occupation'));
+		// pass data to template and return template
+		this.$el.html( this.template(this.model.toJSON()) );
 	}
 });
 
