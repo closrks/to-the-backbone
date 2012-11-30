@@ -1,3 +1,7 @@
+var template = function(id) {
+	return _.template( $('#' + id).html() );
+};
+
 // Person Model
 var Person = Backbone.Model.extend({
 
@@ -21,7 +25,7 @@ var PersonView = Backbone.View.extend({
 	tagName: 'li'
 
 	// underscore templating system
-	, template: _.template( $('#personTemplate').html() )
+	, template: template('personTemplate')
 
 	// call depending on project
 	, render: function() {
