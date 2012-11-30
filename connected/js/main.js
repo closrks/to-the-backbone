@@ -1,84 +1,96 @@
-var template = function(id) {
-	return _.template( $('#' + id).html() );
-};
+(function() {
 
-// Person Model
-var Person = Backbone.Model.extend({
+	window.App = {
+		Models: {}
+		, Views: {}
+		, Collections: {}
+	};
 
-	defaults: {
-		  name: 'Some Guy'
-		, age: 21
-		, occupation: 'Some Job'
-	}
+	window.template = function(id) {
+		return _.template( $('#' + id).html() );
+	};
 
-});
+	// model person
+	App.Models.Person = Backbone.Model.extend({
 
-// List of people
-var PeopleCollection = Backbone.Collection.extend({
-	// model the collection should know
-	model: Person
-});
+		defaults: {
+			  name: 'Some Guy'
+			, age: 21
+			, occupation: 'Some Job'
+		}
 
-// Person View
-var PersonView = Backbone.View.extend({
+	});
 
-	tagName: 'li'
+	// a view for person
+	App.Views.Person = Backbone.View.extend({
 
-	// underscore templating system
-	, template: template('personTemplate')
+		tagName: 'li'
 
-	// call depending on project
-	, render: function() {
-		// pass data to template and return template
-		this.$el.html( this.template(this.model.toJSON()) );
+		// underscore templating system
+		, template: template('personTemplate')
 
-		// always return this from render method to chain
-		return this;
-	}
-});
+		// call depending on project
+		, render: function() {
+			// pass data to template and return template
+			this.$el.html( this.template(this.model.toJSON()) );
 
-// View for people
-var PeopleView = Backbone.View.extend({
+			// always return this from render method to chain
+			return this;
+		}
+	});
 
-	tagName: 'ul'
+	// a view for people
+	App.Views.People = Backbone.View.extend({
 
-	, initialize: function() {
+		tagName: 'ul'
 
-	}
+		, initialize: function() {
 
-	, render: function() {
+		}
 
-		// filter through all items in a collection
-		// for each, create a new PersonView
-		// render and append to this tag name
-		// underscore allows you to pass in 'this'/view context
-		this.collection.each( function(person) {
-			var personView = new PersonView({ model: person });
-			this.$el.append(personView.render().el);
-		}, this);
+		, render: function() {
 
-		// always return this from render method to chain
-		return this;
-	}
-});
+			// filter through all items in a collection
+			// for each, create a new PersonView
+			// render and append to this tag name
+			// underscore allows you to pass in 'this'/view context
+			this.collection.each( function(person) {
+				var personView = new App.Views.Person({ model: person });
+				this.$el.append(personView.render().el);
+			}, this);
 
-// current chaos
-var peopleCollection = new PeopleCollection([
-	{
-		name: 'Carlos Avila'
-		, age: 24
-		, occupation: 'added-value'	
-	}
-	, {
-		name: 'Carlos Evila'
-		, age: 24
-		, occupation: 'caa'
-	}
-	, {
-		name: 'Carlos Ovila'
-		, age: 24
-	}
-]);
+			// always return this from render method to chain
+			return this;
+		}
+	});
 
-var peopleView = new PeopleView({ collection: peopleCollection });
-$(document.body).append(peopleView.render().el);
+	// a list of people
+	App.Collections.People = Backbone.Collection.extend({
+		// model the collection should know
+		model: App.Models.Person
+	});
+
+
+	// current chaos
+	var peopleCollection = new App.Collections.People([
+		{
+			name: 'Carlos Avila'
+			, age: 24
+			, occupation: 'added-value'	
+		}
+		, {
+			name: 'Carlos Evila'
+			, age: 24
+			, occupation: 'caa'
+		}
+		, {
+			name: 'Carlos Ovila'
+			, age: 24
+		}
+	]);
+
+	var peopleView = new App.Views.People({ collection: peopleCollection });
+	$(document.body).append(peopleView.render().el);
+
+})();
+
