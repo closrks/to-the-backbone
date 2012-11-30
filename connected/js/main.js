@@ -1,4 +1,4 @@
-// the backbone way
+// Person Model
 var Person = Backbone.Model.extend({
 
 	defaults: {
@@ -7,27 +7,15 @@ var Person = Backbone.Model.extend({
 		, occupation: 'Some Job'
 	}
 
-	, validate: function(attrs) {
-
-		if (attrs.age < 0) {
-			return 'Age must be positive';
-		}
-
-		if (!attrs.name) {
-			return 'Every person must have a name';
-		}
-
-	}	
-
-	, work: function() {
-
-		return this.get('name') + ' is working.';
-	}
-
 });
 
-// view is representation of single element
-// include jquery first in html
+// List of people
+var PeopleCollection = Backbone.Collection.extend({
+	// model the collection should know
+	model: Person
+});
+
+// Person View
 var PersonView = Backbone.View.extend({
 
 	tagName: 'li'
@@ -47,5 +35,20 @@ var PersonView = Backbone.View.extend({
 	}
 });
 
-var person = new Person();
-var personView = new PersonView({ model: person });
+// current chaos
+var peopleCollection = new PeopleCollection([
+	{
+		name: 'Carlos Avila'
+		, age: 24
+		, occupation: 'added-value'	
+	}
+	, {
+		name: 'Carlos Evila'
+		, age: 24
+		, occupation: 'caa'
+	}
+	, {
+		name: 'Carlos Ovila'
+		, age: 24
+	}
+]);
