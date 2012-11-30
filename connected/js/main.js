@@ -17,7 +17,7 @@ var Person = Backbone.Model.extend({
 			return 'Every person must have a name';
 		}
 
-	}
+	}	
 
 	, work: function() {
 
@@ -33,7 +33,7 @@ var PersonView = Backbone.View.extend({
 	tagName: 'li'
 
 	// underscore templating system
-	, template: _.template("<strong><%= name %></strong> (<%= age %>) - <%= occupation %>")
+	, template: _.template( $('#personTemplate').html() )
 
 	// automatically run on instance
 	, initialize: function() {
