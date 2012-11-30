@@ -23,15 +23,38 @@ var PersonView = Backbone.View.extend({
 	// underscore templating system
 	, template: _.template( $('#personTemplate').html() )
 
-	// automatically run on instance
-	, initialize: function() {
-		this.render();
-	}
-
 	// call depending on project
 	, render: function() {
 		// pass data to template and return template
 		this.$el.html( this.template(this.model.toJSON()) );
+
+		// always return this from render method to chain
+		return this;
+	}
+});
+
+// View for people
+var PeopleView = Backbone.View.extend({
+
+	tagName: 'ul'
+
+	, initialize: function() {
+
+	}
+
+	, render: function() {
+
+		// filter through all items in a collection
+		// for each, create a new PersonView
+		// render and append to this tag name
+		// underscore allows you to pass in 'this'/view context
+		this.collection.each( function(person) {
+			var personView = new PersonView({ model: person });
+			this.$el.append(personView.render().el);
+		}, this);
+
+		// always return this from render method to chain
+		return this;
 	}
 });
 
@@ -52,3 +75,6 @@ var peopleCollection = new PeopleCollection([
 		, age: 24
 	}
 ]);
+
+var peopleView = new PeopleView({ collection: peopleCollection });
+$(document.body).append(peopleView.render().el);
