@@ -31,13 +31,14 @@
 
 		, initialize: function() {
 
-			// set the context one of two ways
-			// _.bindAll(this, 'editTask', 'render');
 			this.model.on('change', this.render, this);
+			// then listen for the destroyed model
+			this.model.on('destroy', this.remove, this);
 		}
 
 		, events: {
 			'click .edit': 'editTask'
+			, 'click .delete': 'destroy'
 		}
 
 		, editTask: function() {
@@ -47,6 +48,16 @@
 			if ( ! newTaskTitle ) return;
 
 			this.model.set('title', newTaskTitle);
+		}
+
+		// first destroy model
+		, destroy: function() {
+			this.model.destroy();
+		}
+
+		// then remove the element from the dom
+		, remove: function() {
+			this.$el.remove();
 		}
 
 		, render: function() {
