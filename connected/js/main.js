@@ -36,6 +36,13 @@
 			this.model.on('destroy', this.remove, this);
 		}
 
+		, render: function() {
+
+			this.$el.html( this.template(this.model.toJSON()) );
+
+			return this;
+		}
+
 		, events: {
 			'click .edit': 'editTask'
 			, 'click .delete': 'destroy'
@@ -60,17 +67,17 @@
 			this.$el.remove();
 		}
 
-		, render: function() {
-
-			this.$el.html( this.template(this.model.toJSON()) );
-
-			return this;
-		}
+		
 	});
 
 	App.Views.Tasks = Backbone.View.extend({
 		
 		tagName: 'ul'
+
+		, initialize: function() {
+			
+			this.collection.on('add', this.addOne, this)
+		}
 
 		, render: function() {
 
@@ -88,6 +95,32 @@
 	});
 
 
+	App.Views.AddTask = Backbone.View.extend({
+		el: '#addTask'
+
+		, events: {
+			'submit': 'submit'
+
+		}
+
+		, initialize: function() {
+
+		}
+
+		, submit: function(e) {
+			// prevent page from posting back
+			e.preventDefault();
+
+			// find value of form
+			var newTaskTitle = $(e.currentTarget).find('input[type=text]').val();
+			
+			// create new model
+			var task = new App.Models.Task({ title: newTaskTitle });
+
+			this.collection.add(task);
+		}
+	});
+
 	// current chaos
 	var tasks = new App.Collections.Tasks([
 		{
@@ -103,6 +136,10 @@
 			, priority: 5
 		}
 	]);
+
+	var addTaskView = new App.Views.AddTask({
+		collection: tasks
+	});
 
 	var tasksView = new App.Views.Tasks({
 		collection: tasks
