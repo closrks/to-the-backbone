@@ -10,87 +10,78 @@
 		return _.template( $('#' + id).html() );
 	};
 
-	// model person
-	App.Models.Person = Backbone.Model.extend({
+	App.Models.Task = Backbone.Model.extend({});
 
-		defaults: {
-			  name: 'Some Guy'
-			, age: 21
-			, occupation: 'Some Job'
-		}
-
+	App.Collections.Tasks = Backbone.Collection.extend({
+		model: App.Models.Task
 	});
 
-	// a view for person
-	App.Views.Person = Backbone.View.extend({
-
+	App.Views.Task = Backbone.View.extend({
+		
 		tagName: 'li'
 
-		// underscore templating system
-		, template: template('personTemplate')
+		, template: template('taskTemplate')
 
-		// call depending on project
+		, events: {
+			'click .edit': 'editTask'
+		}
+
+		, editTask: function() {
+			var newTaskTitle = prompt('What would you like to change the text to', 
+				this.model.get('title'));
+
+			this.model.set('title', newTaskTitle);
+		}
+
 		, render: function() {
-			// pass data to template and return template
+
 			this.$el.html( this.template(this.model.toJSON()) );
 
-			// always return this from render method to chain
 			return this;
 		}
 	});
 
-	// a view for people
-	App.Views.People = Backbone.View.extend({
-
+	App.Views.Tasks = Backbone.View.extend({
+		
 		tagName: 'ul'
-
-		, initialize: function() {
-
-		}
 
 		, render: function() {
 
-			// filter through all items in a collection
-			// for each, create a new PersonView
-			// render and append to this tag name
-			// underscore allows you to pass in 'this'/view context
-			this.collection.each( function(person) {
-				var personView = new App.Views.Person({ model: person });
-				this.$el.append(personView.render().el);
-			}, this);
+			this.collection.each(this.addOne, this);
 
-			// always return this from render method to chain
 			return this;
 		}
-	});
 
-	// a list of people
-	App.Collections.People = Backbone.Collection.extend({
-		// model the collection should know
-		model: App.Models.Person
+		, addOne: function(task) {
+			// create new child view
+			var taskView = new App.Views.Task({ model: task});
+			// append to the root element
+			this.$el.append(taskView.render().el);
+		}
 	});
 
 
 	// current chaos
-	var peopleCollection = new App.Collections.People([
+	var tasks = new App.Collections.Tasks([
 		{
-			name: 'Carlos Avila'
-			, age: 24
-			, occupation: 'added-value'	
+			title: 'Go to the store'
+			, priority: 4
 		}
 		, {
-			name: 'Carlos Evila'
-			, age: 24
-			, occupation: 'caa'
+			title: 'Go to the mall'
+			, priority: 2
 		}
 		, {
-			name: 'Carlos Ovila'
-			, age: 24
+			title: 'Get to work'
+			, priority: 5
 		}
 	]);
 
-	var peopleView = new App.Views.People({ collection: peopleCollection });
-	$(document.body).append(peopleView.render().el);
+	var tasksView = new App.Views.Tasks({
+		collection: tasks
+	});
+
+	$('.tasks').html( tasksView.render().el );
 
 })();
 
