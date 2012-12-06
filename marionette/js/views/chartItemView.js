@@ -11,10 +11,6 @@ function(_, $, Backbone, Marionette) {
 
 		template: '#template-chart'
 
-		, render: function(){
-			return this;
-		}
-
 	});
 
 	return chartItemView;
