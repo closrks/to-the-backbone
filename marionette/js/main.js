@@ -21,10 +21,10 @@ require([
 	'backbone',
 	'marionette',
 	'views/workspaceLayoutView',
-	'views/chartItemView'
+	'models/workspaceModel'
 ],
 
-function(_, $, Backbone, Marionette, WorkspaceLayoutView, ChartItemView){
+function(_, $, Backbone, Marionette, WorkspaceLayoutView, WorkspaceModel){
 
 
 	// new marionette application
@@ -38,11 +38,8 @@ function(_, $, Backbone, Marionette, WorkspaceLayoutView, ChartItemView){
     // add app initializer
     app.addInitializer( function () {
 
-    	var workspaceLayoutView = new WorkspaceLayoutView();
-
-    	app.workspace.show( workspaceLayoutView );
-    	workspaceLayoutView.mainchart.show( new ChartItemView() );
-    	workspaceLayoutView.subchart.show( new ChartItemView() );
+    	var workspaceModel = new WorkspaceModel();
+    	app.workspace.show( new WorkspaceLayoutView({model: workspaceModel}) );
     });
 
     $(function(){

@@ -1,0 +1,21 @@
+#workspace-content {
+	height: 500px;
+	width: 500px;
+}
+
+#workspace-layout {
+	height: 500px;
+	width: 500px;
+}
+
+#mainchart {
+	position: relative;
+	height: 250px;
+	width: 500px;
+}
+
+#subchart {
+	position: relative;
+	height: 250px;
+	width: 500px;
+}
