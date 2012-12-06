@@ -9,9 +9,11 @@ function(_, $, Backbone, Marionette) {
 
 	var chartItemView = Backbone.Marionette.ItemView.extend({
 
-		tagName: 'h1'
-		
-		, template: '#template-chart'
+		template: '#template-chart'
+
+		, render: function(){
+			return this;
+		}
 
 	});
 

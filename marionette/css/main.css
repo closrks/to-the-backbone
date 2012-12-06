@@ -12,10 +12,12 @@
 	position: relative;
 	height: 250px;
 	width: 500px;
+	background-color: blue;
 }
 
 #subchart {
 	position: relative;
 	height: 250px;
 	width: 500px;
+	background-color: red;
 }
