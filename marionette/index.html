@@ -6,19 +6,17 @@
 </head>
 <body>
 
-<section id="workspace">
-  <header id="main-stage"></header>
-  <header id="sub-stage"></header>
-</section>
+<div id="workspace-content"></div>
 
-<script src="js/jquery.js"></script>
-<script src="js/underscore.js"></script>
-<script src="js/backbone.js"></script>
-<script src="js/backbone.marionette.js"></script>
-<script src="js/main.js"></script>
+<script data-main="js/main" src="js/libs/require.js"></script>
 
-<script type="text/html" id="template-chart">
-  <h1>Chart Instance</h1>
+<script id="template-workspace" type="text/template">
+	<div id="mainchart"></div>
+	<div id="subchart"></div>
+</script>
+
+<script id="template-chart" type="text/template">
+	<h1>NEW CHART :)</h1>
 </script>
 
 </body>

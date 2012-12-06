@@ -1,21 +1,52 @@
-var Chart = Backbone.Marionette.ItemView.extend({
-	template: '#template-chart'
+// Set the require.js configuration
+require.config({
+
+    baseUrl: 'js/'
+    
+    , libs: 'libs'
+
+    , paths: {
+
+		// Libraries
+		'jquery': 'libs/jquery',
+		'underscore': 'libs/underscore',
+		'backbone': 'libs/backbone',
+		'marionette': 'libs/backbone.marionette'
+	}
 });
 
-var app = new Backbone.Marionette.Application();
+require([
+	'underscore',
+	'jquery',
+	'backbone',
+	'marionette',
+	'views/workspaceLayoutView',
+	'views/chartItemView'
+],
 
-// regions of application
-app.addRegions({
-	  mainStage: '#main-stage'
-	, subStage: '#sub-stage'
-});
+function(_, $, Backbone, Marionette, WorkspaceLayoutView, ChartItemView){
 
-// initialize 
-app.addInitializer(function() {
-	app.mainStage.show(new Chart());
-	app.subStage.show(new Chart());
-});
 
-$(function(){
-	app.start();
+	// new marionette application
+    var app = new Backbone.Marionette.Application();
+
+    // visual area of the DOM
+    app.addRegions({
+    	workspace: '#workspace-content'
+    });
+
+    // add app initializer
+    app.addInitializer( function () {
+
+    	var workspaceLayoutView = new WorkspaceLayoutView();
+
+    	app.workspace.show( workspaceLayoutView );
+    	workspaceLayoutView.mainchart.show( new ChartItemView() );
+    	workspaceLayoutView.subchart.show( new ChartItemView() );
+    });
+
+    $(function(){
+    	app.start();	
+    });
+
 });
